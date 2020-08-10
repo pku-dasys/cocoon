@@ -1,34 +1,24 @@
-import ops.syn as syn
-from cfg import Design
+from designcfg import Design
+import engine
 import subprocess, os
 
+#define a customized flow
 class MyFlow(object):
 
-	def __init__(self):
-		self.points = []
-		self.ops = []
+    def __init__(self):
+        self.ops = []
 
-	def excute(self, design):
-		design_name = design.top_name
-		make_file = open("Makefile", "w")
-		self.ops[0].config(design_name + "_" + self.points[0])
-		make_file.write("all:\n")
-		make_file.write("\tgenus -legacy_ui -batch -files " + design_name + "_" + self.points[0] + ".tcl\n")
-
+    def flow(self):
+        op_synth = "GenusSynth"
+        self.ops.append((op_synth, "to_synth"))
 
 
 if __name__ == "__main__":
 
-	design = Design("TopModuleWrapper")
+    design = Design("gcd")
 
-	my_flow = MyFlow()
-	op_synth = syn.GenusSynth(design)
-	my_flow.ops.append(op_synth)
-	my_flow.points.append("to_synth")
+    my_flow = MyFlow()
+    flow = my_flow.flow()
 
-	my_flow.excute(design)
-
-	cmd = 'make'
-
-	subprocess.Popen(cmd)
+    res = engine.run(design, my_flow)
 
