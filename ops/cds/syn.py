@@ -1,7 +1,7 @@
 import sys
 sys.path.append("../..")
 import util
-
+'''
 class Params():
     def __init__(self, typ, name, value, optional = False):
         self.type = typ
@@ -12,6 +12,7 @@ class Params():
 
     def check_valid(self):
         return True
+'''
 
 class GenusSynth():
     def __init__(self, design):
@@ -33,7 +34,7 @@ class GenusSynth():
 
     def getObjSDC(self):
         obj_path = util.getObjPath(self.design, "Cadence")
-        obj_sdc = obj_path + "/" + self.design.top_name + "_synth.sdc"
+        obj_sdc = obj_path + "/" + self.design.top_name + ".sdc"
         return obj_sdc
 
     def getRptGates(self):
@@ -65,7 +66,6 @@ class GenusSynth():
 
         #tcl = open(tcl_file + ".tcl", 'w', encoding='utf-8')
         tcl_path = util.getScriptPath(self.design, "Cadence")
-        print(tcl_path)
         tcl = open(tcl_path + "/" + tcl_file + ".tcl", 'w', encoding='utf-8')
 
         #tcl.write('set hdl_files %s\n'%(self.design.rtl_file))
@@ -110,6 +110,7 @@ class GenusSynth():
 
         tcl.close()
 
+'''
 class Output(object):
 
     def __init__(self, design):
@@ -119,3 +120,4 @@ class Output(object):
         f = open(file_name + ".tcl", "w")
         # to-do
         f.close()
+'''

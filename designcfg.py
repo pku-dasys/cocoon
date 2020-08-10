@@ -6,7 +6,7 @@ class Design(object):
         self.rtl_file = "{gcd.v}"
         #self.hdl_path = "./design/gcd/hdl"
         #self.lib_path = "./design/lib"
-        self.mmmc_file = "{./flow.view}"
+        self.mmmc_file = "flow.view"
         self.lef_file = "gscl45nm.lef"
         self.lib_file = "gscl45nm.lib"
         self.clk_name = "clk"
