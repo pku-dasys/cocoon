@@ -28,12 +28,12 @@ class GenusSynth():
 
     def getObjHDL(self):
         obj_path = util.getObjPath(self.design, "Cadence")
-        obj_hdl = obj_pat + "/" + self.design.top_name + ".vh"
+        obj_hdl = obj_path + "/" + self.design.top_name + ".vh"
         return obj_hdl
 
     def getObjSDC(self):
         obj_path = util.getObjPath(self.design, "Cadence")
-        obj_sdc = obj_pat + "/" + self.design.top_name + "_synth.sdc"
+        obj_sdc = obj_path + "/" + self.design.top_name + "_synth.sdc"
         return obj_sdc
 
     def getRptGates(self):
@@ -46,7 +46,7 @@ class GenusSynth():
         rpt_timing = rpt_path + "/" + "timing_synth.rpt"
         return rpt_timing
 
-    def getRptGates(self):
+    def getRptPower(self):
         rpt_path = util.getRptPath(self.design, "Cadence")
         rpt_power = rpt_path + "/" + "gates_synth.rpt"
         return rpt_power
@@ -75,7 +75,7 @@ class GenusSynth():
         tcl.write('set delay %d\n'%(self.design.delay))
         #tcl.write('set_attribute hdl_search_path %s\n'%(self.design.hdl_path))
         #tcl.write('set_attribute lib_search_path %s\n'%(self.design.lib_path))
-        tcl.write('set_attribute hdl_search_path %s\n'%(shdl_path))
+        tcl.write('set_attribute hdl_search_path %s\n'%(hdl_path))
         tcl.write('set_attribute lib_search_path %s\n'%(lib_path))
         tcl.write('set_attribute information_level 6 \n')
         tcl.write('set_attribute library %s\n'%(lib_file))
