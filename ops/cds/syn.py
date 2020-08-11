@@ -88,7 +88,7 @@ class GenusSynth():
         tcl.write('check_design -unresolved\n')
         tcl.write('report timing -lint\n')
 
-        ret = 'synthesize'
+        ret = 'synthesize -to_mapped'
 
         for i in self.params:
             if self.params[i]:

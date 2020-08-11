@@ -31,13 +31,13 @@ class MyFlow(object):
         self.ops.append((op_place, "to_place"))
 
         op_cts = "InnovusCTS"
-        self.ops.append((op_cts, "to_cts"))
+        #self.ops.append((op_cts, "to_cts"))
 
         op_route = "InnovusRoute"
         self.ops.append((op_route, "to_route"))
 
         op_drc = "InnovusDRC"
-        self.ops.append((op_drc, "to_drc"))
+        #self.ops.append((op_drc, "to_drc"))
 
 
 if __name__ == "__main__":

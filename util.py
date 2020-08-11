@@ -1,7 +1,7 @@
 import os
 
 home_path = os.getcwd()
-print(home_path)
+#print(home_path)
 
 def getHDL(design):
     return design.rtl_file
