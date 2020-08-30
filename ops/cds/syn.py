@@ -69,7 +69,7 @@ class GenusSynth():
         tcl = open(tcl_path + "/" + tcl_file + ".tcl", 'w', encoding='utf-8')
 
         #tcl.write('set hdl_files %s\n'%(self.design.rtl_file))
-        tcl.write('set hdl_files %s\n'%(rtl_file))
+        tcl.write('set hdl_files {%s}\n'%(rtl_file))
         tcl.write('set DESIGN %s\n'%(self.design.top_name))
         tcl.write('set clkpin %s\n'%(self.design.clk_name))
         tcl.write('set delay %d\n'%(self.design.delay))

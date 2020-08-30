@@ -8,7 +8,7 @@ import ops.cds.place as place1
 import ops.cds.cts as cts1
 import ops.cds.route as route1
 import ops.cds.drc as drc1
-import ops.openroad.syn as syn2
+import ops.opensource.syn.yosys as syn2
 
 def run(design, flow):
     design_name = design.top_name
@@ -24,7 +24,13 @@ def run(design, flow):
             tmp_op_syn.config(design, design_name + "_" + x[1])
             make_file.write("all:\n")
             make_file.write("\tgenus -legacy_ui -batch -files " + script_path + design_name + "_" + x[1] + ".tcl\n")
-        #if x[0] == "OpenROADSynth":
+
+        if x[0] == "YosysSynth":
+            script_path = "../scripts/"
+            tmp_op_syn = eval("syn2." + "YosysSynth" + "(design)")
+            tmp_op_syn.config(design, design_name + "_" + x[1])
+            make_file.write("all:\n")
+            make_file.write("\tyosys " + script_path + design_name + "_" + x[1] + ".ys\n")
 
         if x[0] == "InnovusFloorplan":
             tmp_op_fp = eval("fp1." + "InnovusFloorplan" + "(design)")
@@ -59,8 +65,8 @@ def run(design, flow):
             overall_tcl.write('source %s/%s_to_drc.tcl\n'%(tcl_path, design_name))
     
 
-    make_file.write("\tinnovus -batch -files " + script_path + "flow.tcl")
-    run_path = util.getRunPath(design, "Cadence")
+    #make_file.write("\tinnovus -batch -files " + script_path + "flow.tcl")
+    run_path = util.getRunPath(design, "Yosys")
     os.chdir(run_path)
     print(os.getcwd())
     #cmd_clean = 'rm innovus.* genus.*'
@@ -68,8 +74,8 @@ def run(design, flow):
     #cmd_clean = 'rm -rf fv'
     #subprocess.Popen(cmd_clean, shell=True).wait()
     cmd = 'make'
-    subprocess.Popen(cmd)
-    #subprocess.Popen(cmd, shell=True).wait()
+    #subprocess.Popen(cmd)
+    subprocess.Popen(cmd, shell=True).wait()
 
     return 0
 

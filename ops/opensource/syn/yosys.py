@@ -5,6 +5,7 @@ import util
 class YosysSynth():
     def __init__(self, design):
         self.params = dict()
+        self.design = design
 
     def getObjHDL(self):
         obj_path = util.getObjPath(self.design, "Yosys")
@@ -40,16 +41,16 @@ class YosysSynth():
     def config(self, design, tcl_file):
         rtl_file = util.getHDL(self.design)
         lib_file = util.getLib(self.design)
-        top_name = util.getTop(self.design)
+        #top_name = self.design.top_name
         hdl_path = util.getHDLPath(self.design, "Yosys")
         lib_path = util.getLibPath(self.design, "Yosys")
 
         tcl_path = util.getScriptPath(self.design, "Yosys")
         tcl = open(tcl_path + "/" + tcl_file + ".ys", 'w', encoding = 'utf-8')
 
-        tcl.write('read -sv %s\n'%(rtl_file)
-        tcl.write('hierarchy -top %s\n'%(top_name))
-        tcl.write('proc; opt; techmap; opt')
-        tcl.write('write_verilog %s\n'*(self.getObjHDL()))
+        tcl.write('read -sv %s\n'%(hdl_path + "/" + rtl_file))
+        tcl.write('hierarchy -top %s\n'%(self.design.top_name))
+        tcl.write('proc; opt; techmap; opt\n')
+        tcl.write('write_verilog %s\n'%(self.getObjHDL()))
 
         tcl.close()

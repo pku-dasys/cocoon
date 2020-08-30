@@ -16,25 +16,28 @@ class MyFlow(object):
         self.params_drc = []
 
     def flow(self):
-        op_synth = "GenusSynth"
-        self.ops.append((op_synth, "to_synth"))
+        #op_synth = "GenusSynth"
+        #self.ops.append((op_synth, "to_synth"))
+
+        op_synth = "YosysSynth"
+        self.ops.append((op_synth, "to_synth")) 
 
         op_floorplan = "InnovusFloorplan"
-        self.ops.append((op_floorplan, "to_floorplan"))
+        #self.ops.append((op_floorplan, "to_floorplan"))
 
-        self.params_fp.append(("r","1.0 0.7 0.0 0.0 0.0 0.0"))
+        #self.params_fp.append(("r","1.0 0.7 0.0 0.0 0.0 0.0"))
 
         op_pdn = "InnovusPDN"
-        self.ops.append((op_pdn, "to_pdn"))
+        #self.ops.append((op_pdn, "to_pdn"))
 
         op_place = "InnovusPlace"
-        self.ops.append((op_place, "to_place"))
+        #self.ops.append((op_place, "to_place"))
 
         op_cts = "InnovusCTS"
         #self.ops.append((op_cts, "to_cts"))
 
         op_route = "InnovusRoute"
-        self.ops.append((op_route, "to_route"))
+        #self.ops.append((op_route, "to_route"))
 
         op_drc = "InnovusDRC"
         #self.ops.append((op_drc, "to_drc"))

@@ -3,7 +3,7 @@ class Design(object):
     def __init__(self, top_name):
         self.top_name = top_name
         self.lib_name = "gscl45nm"
-        self.rtl_file = "{gcd.v}"
+        self.rtl_file = "gcd.v"
         #self.hdl_path = "./design/gcd/hdl"
         #self.lib_path = "./design/lib"
         self.mmmc_file = "flow.view"
