@@ -81,6 +81,12 @@ def evaluate(ckpt_list, optFunc, baseFlow):
             idx = ckpt
     return idx
 
+def pull(ckpt):
+    pass
+
+def push(ckpt):
+    pass
+
 def getCheckpoint(file_path):
     # read checkpoint from path
     return file_path

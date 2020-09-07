@@ -17,10 +17,13 @@ def run(design, flow):
     make_file = open(run_path + "/" + "Makefile", "w")
     tcl_path = util.getScriptPath(design, "Cadence")
     overall_tcl = open(tcl_path + "/" + "flow.tcl", 'w', encoding='utf-8')
-    for x in flow.ops:
+    for x_list in flow.ops:
+        x = x_list[0]
         if x[0] == "GenusSynth":
             script_path = "../scripts/"
             tmp_op_syn = eval("syn1." + "GenusSynth" + "(design)")
+            for param in flow.params_syn:
+                tmp_op_syn.setParams(param[0], param[1])
             tmp_op_syn.config(design, design_name + "_" + x[1])
             make_file.write("all:\n")
             make_file.write("\tgenus -legacy_ui -batch -files " + script_path + design_name + "_" + x[1] + ".tcl\n")
@@ -46,6 +49,9 @@ def run(design, flow):
 
         if x[0] == "InnovusPlace":
             tmp_op_pdn = eval("place1." + "InnovusPlace" + "(design)")
+            for param in flow.params_syn:
+                if param[1] == True:
+                    tmp_op_syn.setParams(param[0])
             tmp_op_pdn.config(design, design_name + "_" + x[1])
             overall_tcl.write('source %s/%s_to_place.tcl\n'%(tcl_path, design_name))
 
@@ -56,6 +62,9 @@ def run(design, flow):
 
         if x[0] == "InnovusRoute":
             tmp_op_route = eval("route1." + "InnovusRoute" + "(design)")
+            for param in flow.params_syn:
+                if param[1] == True:
+                    tmp_op_syn.setParams(param[0])
             tmp_op_route.config(design, design_name + "_" + x[1])
             overall_tcl.write('source %s/%s_to_route.tcl\n'%(tcl_path, design_name))
 
