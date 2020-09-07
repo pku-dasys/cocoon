@@ -5,4 +5,4 @@ choose EDA point tools to assemble a legal design flow and to produce ICs with h
 It can also help EDA researchers and tool developer do research on new design methodology and cross-stage optimization.
 
 ## Cocoon Architecture
-![Image text](https://code.aliyun.com/openbelt/cocoon/tree/master/image/arch.png)
+![avatar](image/arch.png)
