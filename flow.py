@@ -48,7 +48,7 @@ if __name__ == "__main__":
     design = Design("gcd")
 
     my_flow = MyFlow()
-    flow = my_flow.flow()
+    my_flow.flow()
 
     res = engine.run(design, my_flow)
 

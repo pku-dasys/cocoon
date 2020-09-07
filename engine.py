@@ -1,14 +1,14 @@
 import subprocess
 import os
 import util
-import ops.cds.syn as syn1
-import ops.cds.floorplan as fp1
-import ops.cds.pdn as pdn1
-import ops.cds.place as place1
-import ops.cds.cts as cts1
-import ops.cds.route as route1
-import ops.cds.drc as drc1
-import ops.opensource.syn.yosys as syn2
+import apps.cds.syn as syn1
+import apps.cds.floorplan as fp1
+import apps.cds.pdn as pdn1
+import apps.cds.place as place1
+import apps.cds.cts as cts1
+import apps.cds.route as route1
+import apps.cds.drc as drc1
+import apps.opensource.syn.yosys as syn2
 
 def run(design, flow):
     design_name = design.top_name
