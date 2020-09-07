@@ -38,6 +38,7 @@ def getLefPath(design, baseflow):
     return lef_path
 
 def getRptPath(design, baseflow):
+    rpt_path = home_path + "/data/" + design.top_name + "/" + design.lib_name + "/reports"
     if baseflow == "Cadence":
         rpt_path = home_path + "/data/" + design.top_name + "/" + design.lib_name + "/reports"
     elif baseflow == "Yosys":
@@ -69,6 +70,7 @@ def getResult(design, optFunc, baseFlow):
     if optFunc == "Timing":
         rpt = getRptPath(design, baseFlow)
         res = rpt + "/timing.rpt"
+    res = 1000
     return res
 
 def evaluate(ckpt_list, optFunc, baseFlow):

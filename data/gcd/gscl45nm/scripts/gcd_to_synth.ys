@@ -1,4 +1,4 @@
-read -sv /Users/daitoto/Desktop/code/DASYS/cocoon/data/gcd/hdl/gcd.v
+read -sv /Users/daitoto/Desktop/code/DASYS/cocoon/demo/branch/../../data/gcd/hdl/gcd.v
 hierarchy -top gcd
 proc; opt; techmap; opt
-write_verilog /Users/daitoto/Desktop/code/DASYS/cocoon/data/gcd/gscl45nm/objects/gcd.v
+write_verilog /Users/daitoto/Desktop/code/DASYS/cocoon/demo/branch/../../data/gcd/gscl45nm/objects/gcd.v

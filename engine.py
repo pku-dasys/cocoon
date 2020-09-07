@@ -48,11 +48,11 @@ def run(design, flow):
             overall_tcl.write('source %s/%s_to_pdn.tcl\n'%(tcl_path, design_name))
 
         if x[0] == "InnovusPlace":
-            tmp_op_pdn = eval("place1." + "InnovusPlace" + "(design)")
-            for param in flow.params_syn:
+            tmp_op_place = eval("place1." + "InnovusPlace" + "(design)")
+            for param in flow.params_place:
                 if param[1] == True:
-                    tmp_op_syn.setParams(param[0])
-            tmp_op_pdn.config(design, design_name + "_" + x[1])
+                    tmp_op_place.setParams(param[0])
+            tmp_op_place.config(design, design_name + "_" + x[1])
             overall_tcl.write('source %s/%s_to_place.tcl\n'%(tcl_path, design_name))
 
         if x[0] == "InnovusCTS":
@@ -62,9 +62,8 @@ def run(design, flow):
 
         if x[0] == "InnovusRoute":
             tmp_op_route = eval("route1." + "InnovusRoute" + "(design)")
-            for param in flow.params_syn:
-                if param[1] == True:
-                    tmp_op_syn.setParams(param[0])
+            for param in flow.params_route:
+                tmp_op_route.setParams(param[0], param[1])
             tmp_op_route.config(design, design_name + "_" + x[1])
             overall_tcl.write('source %s/%s_to_route.tcl\n'%(tcl_path, design_name))
 
@@ -86,5 +85,5 @@ def run(design, flow):
     #subprocess.Popen(cmd)
     subprocess.Popen(cmd, shell=True).wait()
 
-    return 0
+    return design
 

@@ -5,6 +5,7 @@ import engine
 import util
 from myflow import MyFlow
 from designcfg import Design
+util.home_path = util.home_path + "/../.."
 
 space = {
     # syn
@@ -17,11 +18,10 @@ space = {
     "place_nop": hp.choice("place_x3", [True, False]),
     # route
     "route_gd": hp.choice("route_x1", [True, False]),
-    "route_detail": hp.choice("route_x2", [True, False]),
     "route_clock": hp.choice("route_x3", [True, False])
 }
 
-design = Design("cgra")
+design = Design("gcd")
 
 def optFunc(args):
 
@@ -36,7 +36,6 @@ def optFunc(args):
     flow.params_place.append(("noPrePlaceOpt", args["place_nop"]))
 
     flow.params_route.append(("globalDetail", args["route_gd"]))
-    flow.params_route.append(("detail", args["route_detail"]))
     flow.params_route.append(("clockEco", args["route_clock"]))
 
     ckpt = engine.run(design, flow)

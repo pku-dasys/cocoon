@@ -4,6 +4,7 @@ from designcfg import Design
 import engine
 import subprocess, os
 import util
+util.home_path = util.home_path + "/../.."
 
 #define a customized flow
 class MyFlow(object):
