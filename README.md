@@ -6,3 +6,17 @@ It can also help EDA researchers and tool developer do research on new design me
 
 ## Cocoon Architecture
 ![avatar](image/arch.png)
+
+## Dependency
+ - python3
+ - [Yosys](https://github.com/YosysHQ/yosys)
+ - [Hpyeropt](https://github.com/hyperopt/hyperopt)
+ - genus (optional)
+ - innovus (optional)
+ 
+## Demo
+ 
+## Ongoing work
+ - Integrating other open source binaries
+ - Legality Check
+ - More demo flows
