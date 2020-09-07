@@ -1,14 +1,14 @@
 import subprocess
 import os
 import util
-import ops.cds.syn as syn1
-import ops.cds.floorplan as fp1
-import ops.cds.pdn as pdn1
-import ops.cds.place as place1
-import ops.cds.cts as cts1
-import ops.cds.route as route1
-import ops.cds.drc as drc1
-import ops.opensource.syn.yosys as syn2
+import apps.cds.syn as syn1
+import apps.cds.floorplan as fp1
+import apps.cds.pdn as pdn1
+import apps.cds.place as place1
+import apps.cds.cts as cts1
+import apps.cds.route as route1
+import apps.cds.drc as drc1
+import apps.opensource.syn.yosys as syn2
 
 def run(design, flow):
     design_name = design.top_name
@@ -17,10 +17,13 @@ def run(design, flow):
     make_file = open(run_path + "/" + "Makefile", "w")
     tcl_path = util.getScriptPath(design, "Cadence")
     overall_tcl = open(tcl_path + "/" + "flow.tcl", 'w', encoding='utf-8')
-    for x in flow.ops:
+    for x_list in flow.ops:
+        x = x_list[0]
         if x[0] == "GenusSynth":
             script_path = "../scripts/"
             tmp_op_syn = eval("syn1." + "GenusSynth" + "(design)")
+            for param in flow.params_syn:
+                tmp_op_syn.setParams(param[0], param[1])
             tmp_op_syn.config(design, design_name + "_" + x[1])
             make_file.write("all:\n")
             make_file.write("\tgenus -legacy_ui -batch -files " + script_path + design_name + "_" + x[1] + ".tcl\n")
@@ -46,6 +49,9 @@ def run(design, flow):
 
         if x[0] == "InnovusPlace":
             tmp_op_pdn = eval("place1." + "InnovusPlace" + "(design)")
+            for param in flow.params_syn:
+                if param[1] == True:
+                    tmp_op_syn.setParams(param[0])
             tmp_op_pdn.config(design, design_name + "_" + x[1])
             overall_tcl.write('source %s/%s_to_place.tcl\n'%(tcl_path, design_name))
 
@@ -56,6 +62,9 @@ def run(design, flow):
 
         if x[0] == "InnovusRoute":
             tmp_op_route = eval("route1." + "InnovusRoute" + "(design)")
+            for param in flow.params_syn:
+                if param[1] == True:
+                    tmp_op_syn.setParams(param[0])
             tmp_op_route.config(design, design_name + "_" + x[1])
             overall_tcl.write('source %s/%s_to_route.tcl\n'%(tcl_path, design_name))
 
