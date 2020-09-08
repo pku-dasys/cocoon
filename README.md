@@ -16,9 +16,9 @@ It can also help EDA researchers and tool developer do research on new design me
  
 ## Demo
  1. Branch Flow
- 	- python3 demo/branch/flow.py
+ 	- cd demo/branch/ && python3 flow.py
  2. Flow Tuning
- 	- python3 demo/tuner/main.py
+ 	- cd demo/tuner/ && python3 main.py
  
 ## Ongoing work
  - Integrating other open source binaries
