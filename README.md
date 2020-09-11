@@ -24,3 +24,4 @@ It can also help EDA researchers and tool developer do research on new design me
  - Integrating other open source binaries
  - Legality Check
  - More demo flows
+ - Beautify the UI
