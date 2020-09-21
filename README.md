@@ -25,3 +25,16 @@ It can also help EDA researchers and tool developer research new design methodol
  - Legality Check
  - More demo flows
  - Beautify the UI
+
+## Publication
+
+If you use cocoon in your research, please cite our WOSET'20 paper:
+```
+@article{zhang-cocoon-woset2020,
+  title   = "{Cocoon: An Open Source Infrastructure for Integrated EDA with Interoperability and Interactivity}",
+  author  = {Jiaxi Zhang and Tuo Dai and Zhengzheng Ma and Yibo Lin and Guojie Luo}
+  journal = {Workshop on Open-Source EDA Technology (WOSET)},
+  month   = {Nov},
+  year    = {2020},
+}
+```
