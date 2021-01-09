@@ -32,7 +32,7 @@ It can also help EDA researchers and tool developer research new design methodol
 
 ## Publication
 
-If you use cocoon in your research, please cite our WOSET'20 paper:
+If you use cocoon in your research, please cite our WOSET'20 paper: ``Jiaxi Zhang, Tuo Dai, Zhengzheng Ma, Yibo Lin, Guojie Luo, "Cocoon: An Open Source Infrastructure for Integrated EDA with Interoperability and Interactivity", Workshop on Open-Source EDA Technology (WOSET), November 2020.``
 ```
 @article{zhang-cocoon-woset2020,
   title   = "{Cocoon: An Open Source Infrastructure for Integrated EDA with Interoperability and Interactivity}",
