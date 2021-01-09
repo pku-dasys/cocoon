@@ -26,6 +26,10 @@ It can also help EDA researchers and tool developer research new design methodol
  - More demo flows
  - Beautify the UI
 
+## Related works
+- Berkeley [Hammer](https://github.com/ucb-bar/hammer/)
+- Stanford [mflowgen](https://github.com/mflowgen/mflowgen)
+
 ## Publication
 
 If you use cocoon in your research, please cite our WOSET'20 paper:
