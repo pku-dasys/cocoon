@@ -36,6 +36,7 @@ class InnovusCTS(object):
                 ret = ret + ' -' + i
         
         tcl = open(tcl_path + "/" + tcl_file + ".tcl", 'w', encoding='utf-8')
+        tcl.write('set_ccopt_property buffer_cells "CLKBUF1 CLKBUF2 CLKBUF3"\n')
         tcl.writelines(ret)
         tcl.close()
         return ret
