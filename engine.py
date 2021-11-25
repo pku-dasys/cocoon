@@ -17,8 +17,7 @@ def run(design, flow):
     make_file = open(run_path + "/" + "Makefile", "w")
     tcl_path = util.getScriptPath(design, "Cadence")
     overall_tcl = open(tcl_path + "/" + "flow.tcl", 'w', encoding='utf-8')
-    for x_list in flow.ops:
-        x = x_list[0]
+    for x in flow.ops:
         if x[0] == "GenusSynth":
             script_path = "../scripts/"
             tmp_op_syn = eval("syn1." + "GenusSynth" + "(design)")
