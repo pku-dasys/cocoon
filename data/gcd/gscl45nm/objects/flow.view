@@ -1,7 +1,0 @@
-create_library_set -name gscl45nm -timing {/home/jxzhang/projects/cocoon/design/lib/gscl45nm.lib}
-create_rc_corner -name default_rc_corner -preRoute_res {1.0} -preRoute_cap {1.0} -preRoute_clkres {0.0} -preRoute_clkcap {0.0} -postRoute_res {1.0} -postRoute_cap {1.0} -postRoute_xcap {1.0} -postRoute_clkres {0.0} -postRoute_clkcap {0.0}
-create_delay_corner -name default_delay_corner -library_set {gscl45nm} -rc_corner {default_rc_corner}
-create_constraint_mode -name common -sdc_files {/home/jxzhang/projects/cocoon/design/gcd/gscl45nm/objects/gcd.sdc}
-create_analysis_view -name default_view_hold -constraint_mode {common} -delay_corner {default_delay_corner}
-create_analysis_view -name default_view_setup -constraint_mode {common} -delay_corner {default_delay_corner}
-set_analysis_view -setup {default_view_setup} -hold {default_view_hold}

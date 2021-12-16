@@ -18,83 +18,76 @@ def getMmmc(design):
 
 def getHDLPath(design, baseflow):
     if baseflow == "Cadence":
-        hdl_path = home_path + "/data/" + design.top_name + "/hdl"
-    elif baseflow == "Yosys":
-        hdl_path = home_path + "/data/" + design.top_name + "/hdl"
+        hdl_path = home_path + "/design/" + design.top_name + "/hdl"
+    elif baseflow == "Openroad":
+        hdl_path = "/OpenROAD-flow/flow/designs/design/" + design.top_name + "/hdl"
     return hdl_path
 
 def getLibPath(design, baseflow):
     if baseflow == "Cadence":
-        lib_path = home_path + "/data/lib"
-    elif baseflow == "Yosys":
-        lib_path = home_path + "/data/lib"
+        lib_path = home_path + "/design/lib"
+    elif baseflow == "Openroad":
+        lib_path = "/OpenROAD-flow/flow/platforms/" + design.lib_name
     return lib_path
 
 def getLefPath(design, baseflow):
     if baseflow == "Cadence":
-        lef_path = home_path + "/data/lib"
-    elif baseflow == "Yosys":
+        lef_path = home_path + "/design/lib"
+    elif baseflow == "Openroad":
         lef_path = ""
     return lef_path
 
 def getRptPath(design, baseflow):
-    rpt_path = home_path + "/data/" + design.top_name + "/" + design.lib_name + "/reports"
     if baseflow == "Cadence":
-        rpt_path = home_path + "/data/" + design.top_name + "/" + design.lib_name + "/reports"
-    elif baseflow == "Yosys":
-        rpt_path = home_path + "/data/" + design.top_name + "/" + design.lib_name + "/reports"
+        rpt_path = home_path + "/design/" + design.top_name + "/" + design.lib_name + "/reports"
+    elif baseflow == "Openroad":
+        rpt_path = "/OpenROAD-flow/flow" + design.top_name + "/" + design.lib_name + "/reports"
     return rpt_path
 
 def getObjPath(design, baseflow):
     if baseflow == "Cadence":
-        obj_path = home_path + "/data/" + design.top_name + "/" + design.lib_name + "/objects"
-    elif baseflow == "Yosys":
-        obj_path = home_path + "/data/" + design.top_name + "/" + design.lib_name + "/objects"
+        obj_path = home_path + "/design/" + design.top_name + "/" + design.lib_name + "/objects"
+    elif baseflow == "Openroad":
+        obj_path = "/OpenROAD-flow/flow" + design.top_name + "/" + design.lib_name + "/objects"
     return obj_path
 
 def getScriptPath(design, baseflow):
     if baseflow == "Cadence":
-        script_path = home_path + "/data/" + design.top_name + "/" + design.lib_name + "/scripts"
-    elif baseflow == "Yosys":
-        script_path = home_path + "/data/" + design.top_name + "/" + design.lib_name + "/scripts"
+        script_path = home_path + "/design/" + design.top_name + "/" + design.lib_name + "/scripts"
+    elif baseflow == "Openroad":
+        script_path = "/OpenROAD-flow/flow" + design.top_name + "/" + design.lib_name + "/scripts"
     return script_path
 
 def getRunPath(design, baseflow):
     if baseflow == "Cadence":
-        run_path = home_path + "/data/" + design.top_name + "/" + design.lib_name + "/run"
-    elif baseflow == "Yosys":
-        run_path = home_path + "/data/" + design.top_name + "/" + design.lib_name + "/run"
+        run_path = home_path + "/design/" + design.top_name + "/" + design.lib_name + "/run"
+    elif baseflow == "Openroad":
+        run_path = "/OpenROAD-flow/flow" + design.top_name + "/" + design.lib_name + "/run"
     return run_path
 
-def getResult(design, optFunc, baseFlow):
-    if optFunc == "Timing":
-        rpt = getRptPath(design, baseFlow)
-        res = rpt + "/timing.rpt"
-    res = 1000
-    return res
-
-def evaluate(ckpt_list, optFunc, baseFlow):
-    idx = None
-    res = 1000000
-    for ckpt in ckpt_list:
-        tmp = getResult(ckpt, optFunc, baseFlow)
-        if tmp < res:
-            res = tmp
-            idx = ckpt
-    return idx
-
-def pull(ckpt):
-    pass
-
-def push(ckpt):
-    pass
-
-def getCheckpoint(file_path):
-    # read checkpoint from path
-    return file_path
+def parseTimingRpt(timing_rpt_path):
+    """
+    Args:
+    timing_rpt_path: path/to/timing_synth.rpt
+    Return:
+    critical path in form (start-point, end-point)
+    """
+    timing_rpt = open(timing_rpt_path, mode='r')
+    lines = timing_rpt.readlines()
+    lines.reverse()
+    start, end = None, None
+    for line in lines:
+        line = line.strip()
+        if "End-point" in line:
+            fields = line.split()
+            end = fields[-1]
+        elif "Start-point" in line:
+            fields = line.split()
+            start = fields[-1]
+            break
+    timing_rpt.close()
     
+    return (start, end)
 
-def saveCheckpoint(ckpt, file_path):
-    # save checkpoint to path
-    pass
+
 

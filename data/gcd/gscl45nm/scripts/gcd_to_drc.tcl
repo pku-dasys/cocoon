@@ -1,1 +1,0 @@
-check_design -type all

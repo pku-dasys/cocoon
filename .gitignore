@@ -1,2 +1,7 @@
 *.pyc
 .DS_Store
+__pycache__/
+extern_toolkits/
+pillars/
+design/
+
