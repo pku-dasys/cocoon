@@ -37,34 +37,44 @@ def getLefPath(design, baseflow):
         lef_path = ""
     return lef_path
 
-def getRptPath(design, baseflow):
-    if baseflow == "Cadence":
-        rpt_path = home_path + "/design/" + design.top_name + "/" + design.lib_name + "/reports"
-    elif baseflow == "Openroad":
-        rpt_path = "/OpenROAD-flow/flow" + design.top_name + "/" + design.lib_name + "/reports"
-    return rpt_path
+def getRptPath(design):
+    """
+    get the reports directory
+    """
+    return os.path.join(design.result_dir, design.top_name, design.lib_name, "reports/")
 
-def getObjPath(design, baseflow):
-    if baseflow == "Cadence":
-        obj_path = home_path + "/design/" + design.top_name + "/" + design.lib_name + "/objects"
-    elif baseflow == "Openroad":
-        obj_path = "/OpenROAD-flow/flow" + design.top_name + "/" + design.lib_name + "/objects"
-    return obj_path
+def getObjPath(design):
+    """
+    get the objects directory
+    """
+    return os.path.join(design.result_dir, design.top_name, design.lib_name, "objects/")
 
-def getScriptPath(design, baseflow):
-    if baseflow == "Cadence":
-        script_path = home_path + "/design/" + design.top_name + "/" + design.lib_name + "/scripts"
-    elif baseflow == "Openroad":
-        script_path = "/OpenROAD-flow/flow" + design.top_name + "/" + design.lib_name + "/scripts"
-    return script_path
+def getScriptPath(design):
+    """
+    get the scripts directory
+    """
+    return os.path.join(design.result_dir, design.top_name, design.lib_name, "scripts/")
 
-def getRunPath(design, baseflow):
-    if baseflow == "Cadence":
-        run_path = home_path + "/design/" + design.top_name + "/" + design.lib_name + "/run"
-    elif baseflow == "Openroad":
-        run_path = "/OpenROAD-flow/flow" + design.top_name + "/" + design.lib_name + "/run"
-    return run_path
+def getRunPath(design):
+    """
+    get the working directory
+    """
+    return os.path.join(design.result_dir, design.top_name, design.lib_name, "run/")
 
+def createMMMC(design, path):
+    """
+    Create a mmmc file according to the design
+    """
+    mmmc = open(path, mode='w')
+    mmmc.write("create_library_set -name %s -timing {%s}\n" % (design.lib_name, design.liberty_input))
+    mmmc.write("create_rc_corner -name default_rc_corner -preRoute_res {1.0} -preRoute_cap {1.0} -preRoute_clkres {0.0} -preRoute_clkcap {0.0} -postRoute_res {1.0} -postRoute_cap {1.0} -postRoute_xcap {1.0} -postRoute_clkres {0.0} -postRoute_clkcap {0.0}\n")
+    mmmc.write("create_delay_corner -name default_delay_corner -library_set {%s} -rc_corner {default_rc_corner}\n" % design.lib_name)
+    mmmc.write("create_constraint_mode -name common -sdc_files {%s}\n" % os.path.join(getObjPath(design), design.top_name + ".sdc"))
+    mmmc.write("create_analysis_view -name default_view_hold -constraint_mode {common} -delay_corner {default_delay_corner}\n")
+    mmmc.write("create_analysis_view -name default_view_setup -constraint_mode {common} -delay_corner {default_delay_corner}\n")
+    mmmc.write("set_analysis_view -setup {default_view_setup} -hold {default_view_hold}\n")
+    mmmc.close()
+    
 def parseTimingRpt(timing_rpt_path):
     """
     Args:
@@ -89,5 +99,13 @@ def parseTimingRpt(timing_rpt_path):
     
     return (start, end)
 
+def printWelcome():
 
+    content = """\
+=======================================================
+                       Cocoon
+        - An Infrastructure for Integrated EDA -
+                    by PKU-DASYS
+======================================================="""
 
+    print(content)

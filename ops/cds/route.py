@@ -1,6 +1,6 @@
-import sys
-sys.path.append("../..")
+import os
 import util
+
 
 class InnovusRoute():
     def __init__(self, design):
@@ -37,32 +37,27 @@ class InnovusRoute():
             assert False, 'Unknown param'
     
     def getObjHDL(self):
-        obj_path = util.getObjPath(self.design, "Cadence")
-        obj_hdl = obj_path + "/" + self.design.top_name + ".vh"
+        obj_path = util.getObjPath(self.design)
+        obj_hdl = os.path.join(obj_path, self.design.top_name + ".vh")
         return obj_hdl
 
     def getObjSDC(self):
-        obj_path = util.getObjPath(self.design, "Cadence")
-        obj_sdc = obj_path + "/" + self.design.top_name + ".sdc"
+        obj_path = util.getObjPath(self.design)
+        obj_sdc = os.path.join(obj_path, self.design.top_name + ".sdc")
         return obj_sdc
 
     def getObjMMMC(self):
-        obj_path = util.getObjPath(self.design, "Cadence")
-        obj_mmmc = "{" + obj_path + "/" + util.getMmmc(self.design) + "}"
-        return obj_mmmc
-
-    def getLEF(self):
-        lef_path = util.getLefPath(self.design, "Cadence")
-        lef_file = lef_path + "/" + util.getLef(self.design)
-        return lef_file
+        obj_path = util.getObjPath(self.design)
+        mmmc_path = os.path.join(obj_path, "flow.view")
+        return mmmc_path
 
     def getDreamplaceDef(self):
-        run_path = util.getRunPath(self.design, "Cadence")
-        obj_def = run_path + "/" + ("%s_after_fp" % self.design.top_name) + "/" + "%s_after_fp.gp.def" % self.design.top_name
+        run_path = util.getRunPath(self.design,)
+        obj_def = os.path.join(run_path, "%s_after_fp" % self.design.top_name, "%s_after_fp.gp.def" % self.design.top_name)
         return obj_def
 
     def config(self, design, tcl_file):
-        tcl_path = util.getScriptPath(self.design, "Cadence")
+        tcl_path = util.getScriptPath(self.design)
         ret = 'routeDesign'
         for i in self.params:
             if self.params[i]:
@@ -78,12 +73,12 @@ class InnovusRoute():
                 if self.paramsPassive[i]:
                     ret = ret + " -" + i
 
-        tcl = open(tcl_path + "/" + tcl_file + ".tcl", 'w', encoding='utf-8')
+        tcl = open(os.path.join(tcl_path, tcl_file + ".tcl"), 'w', encoding='utf-8')
 
         if self.paramsExtern["def_in"]:
             #init design
             tcl.write("set init_mmmc_file %s\n" % self.getObjMMMC()) 
-            tcl.write("set init_lef_file %s\n" % self.getLEF()) 
+            tcl.write("set init_lef_file %s\n" % self.design.lef_input) 
             tcl.write("set init_verilog %s\n" % self.getObjHDL())  # need to specified
             tcl.write('set init_gnd_net "VSS"\n')
             tcl.write('set init_pwr_net "VDD"\n')

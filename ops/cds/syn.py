@@ -1,18 +1,6 @@
-import sys
-sys.path.append("../..")
+import os
 import util
-'''
-class Params():
-    def __init__(self, typ, name, value, optional = False):
-        self.type = typ
-        self.name = name
-        self.range = []
-        self.value = value
-        self.optional = optional
 
-    def check_valid(self):
-        return True
-'''
 
 class GenusSynth():
     def __init__(self, design, critical_path=None):
@@ -22,35 +10,30 @@ class GenusSynth():
         self.params["spatial"] = False
         self.critical_path = critical_path
         self.design = design
-        #self.design.obj_hdl = design.obj_path + "/" + design.top_name + ".vh"
-        #self.design.obj_sdc = design.obj_path + "/" + design.top_name + "_synth.sdc"
-        #self.design.rpt_gates = design.rpt_path + "/" + "gates_synth.rpt"
-        #self.design.rpt_timing = design.rpt_path + "/" + "timing_synth.rpt"
-        #self.design.rpt_power = design.rpt_path + "/" + "power_synth.rpt"
 
     def getObjHDL(self):
-        obj_path = util.getObjPath(self.design, "Cadence")
-        obj_hdl = obj_path + "/" + self.design.top_name + ".vh"
+        obj_path = util.getObjPath(self.design)
+        obj_hdl = os.path.join(obj_path, self.design.top_name + ".vh")
         return obj_hdl
 
     def getObjSDC(self):
-        obj_path = util.getObjPath(self.design, "Cadence")
-        obj_sdc = obj_path + "/" + self.design.top_name + ".sdc"
+        obj_path = util.getObjPath(self.design)
+        obj_sdc = os.path.join(obj_path, self.design.top_name + ".sdc")
         return obj_sdc
 
     def getRptGates(self):
-        rpt_path = util.getRptPath(self.design, "Cadence")
-        rpt_gates = rpt_path + "/" + "gates_synth.rpt"
+        rpt_path = util.getRptPath(self.design)
+        rpt_gates = os.path.join(rpt_path, "gates_synth.rpt")
         return rpt_gates
 
     def getRptTiming(self):
-        rpt_path = util.getRptPath(self.design, "Cadence")
-        rpt_timing = rpt_path + "/" + "timing_synth.rpt"
+        rpt_path = util.getRptPath(self.design)
+        rpt_timing = os.path.join(rpt_path, "timing_synth.rpt")
         return rpt_timing
 
     def getRptPower(self):
-        rpt_path = util.getRptPath(self.design, "Cadence")
-        rpt_power = rpt_path + "/" + "gates_synth.rpt"
+        rpt_path = util.getRptPath(self.design)
+        rpt_power = os.path.join(rpt_path, "power_synth.rpt")
         return rpt_power
 
     def setParams(self, param, optional):
@@ -87,27 +70,19 @@ class GenusSynth():
         return cmd
 
     def config(self, design, tcl_file):
-        rtl_file = util.getHDL(self.design)
-        lib_file = util.getLib(self.design)
-        hdl_path = util.getHDLPath(self.design, "Cadence")
-        lib_path = util.getLibPath(self.design, "Cadence")
+        rtl_file = design.rtl_input
+        lib_file = design.liberty_input
+        tcl_path = util.getScriptPath(self.design)
+        tcl = open(os.path.join(tcl_path, tcl_file + ".tcl"), 'w', encoding='utf-8')
 
-        #tcl = open(tcl_file + ".tcl", 'w', encoding='utf-8')
-        tcl_path = util.getScriptPath(self.design, "Cadence")
-        tcl = open(tcl_path + "/" + tcl_file + ".tcl", 'w', encoding='utf-8')
-
-        #tcl.write('set hdl_files %s\n'%(self.design.rtl_file))
-        tcl.write('set hdl_files %s\n'%(rtl_file))
         tcl.write('set DESIGN %s\n'%(self.design.top_name))
         tcl.write('set clkpin %s\n'%(self.design.clk_name))
         tcl.write('set delay %d\n'%(self.design.delay))
-        #tcl.write('set_attribute hdl_search_path %s\n'%(self.design.hdl_path))
-        #tcl.write('set_attribute lib_search_path %s\n'%(self.design.lib_path))
-        tcl.write('set_attribute hdl_search_path %s\n'%(hdl_path))
-        tcl.write('set_attribute lib_search_path %s\n'%(lib_path))
+        
         tcl.write('set_attribute information_level 6 \n')
         tcl.write('set_attribute library %s\n'%(lib_file))
-        tcl.write('read_hdl ${hdl_files} \n')
+        tcl.write(f'read_hdl {rtl_file}\n')
+
         tcl.write('elaborate $DESIGN \n')
 
         # Path group for timing optimization
@@ -128,12 +103,6 @@ class GenusSynth():
         
         tcl.write(ret + '\n')
 
-        #tcl.write("report timing > %s\n"%(self.design.rpt_timing))
-        #tcl.write('report gates  > %s\n'%(self.design.rpt_gates))
-        #tcl.write('report power  > %s\n'%(self.design.rpt_power))
-        #tcl.write('write_hdl -mapped >  %s\n'%(self.design.obj_hdl))
-        #tcl.write('write_sdc >  %s\n'%(self.design.obj_sdc))
-
         tcl.write("report timing > %s\n"%(self.getRptTiming()))
         tcl.write('report gates  > %s\n'%(self.getRptGates()))
         tcl.write('report power  > %s\n'%(self.getRptPower()))
@@ -141,15 +110,3 @@ class GenusSynth():
         tcl.write('write_sdc >  %s\n'%(self.getObjSDC()))
 
         tcl.close()
-
-'''
-class Output(object):
-
-    def __init__(self, design):
-        pass
-
-    def config(self, file_name):
-        f = open(file_name + ".tcl", "w")
-        # to-do
-        f.close()
-'''

@@ -1,5 +1,4 @@
-import sys
-sys.path.append("../..")
+import os
 import util
 
 class InnovusCTS(object):
@@ -25,7 +24,7 @@ class InnovusCTS(object):
             self.params[param] = True
         
     def config(self, design, tcl_file):
-        tcl_path = util.getScriptPath(self.design, "Cadence")
+        tcl_path = util.getScriptPath(self.design)
         ret = 'ccopt_design'
         if self.outDir != '!':
             ret = ret + ' -outDir ' + self.outDir
@@ -35,7 +34,7 @@ class InnovusCTS(object):
             if self.params[i] == True:
                 ret = ret + ' -' + i
         
-        tcl = open(tcl_path + "/" + tcl_file + ".tcl", 'w', encoding='utf-8')
+        tcl = open(os.path.join(tcl_path, tcl_file + ".tcl"), 'w', encoding='utf-8')
         tcl.write('set_ccopt_property buffer_cells "CLKBUF1 CLKBUF2 CLKBUF3"\n')
         tcl.writelines(ret)
         tcl.close()

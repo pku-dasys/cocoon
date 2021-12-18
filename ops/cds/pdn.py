@@ -1,6 +1,6 @@
-import sys
-sys.path.append("../..")
+import os
 import util
+
 
 class InnovusPDN():
     def __init__(self, design):
@@ -14,9 +14,8 @@ class InnovusPDN():
             assert False, 'Unknown param'
 
     def config(self, design, tcl_file):
-        tcl_path = util.getScriptPath(self.design, "Cadence")
-        # tcl_path = "."
-        tcl = open(tcl_path + "/" + tcl_file + ".tcl", 'w', encoding='utf-8')
+        tcl_path = util.getScriptPath(self.design)
+        tcl = open(os.path.join(tcl_path, tcl_file + ".tcl"), 'w', encoding='utf-8')
 
         tcl.write('globalNetConnect VDD -type pgpin -pin VDD -inst * -verbose\n')
         tcl.write('globalNetConnect VSS -type pgpin -pin VSS -inst * -verbose\n')

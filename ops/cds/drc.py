@@ -1,5 +1,4 @@
-import sys
-sys.path.append("../..")
+import os
 import util
 
 class InnovusDRC():
@@ -17,7 +16,7 @@ class InnovusDRC():
             assert False, 'Unknown param'
 
     def config(self, design, tcl_file):
-        tcl_path = util.getScriptPath(self.design, "Cadence")
+        tcl_path = util.getScriptPath(self.design)
         ret = 'check_design'
         if self.params['out_file'] is not 'default':
             ret = ret + " -out_file " + self.params['out_file']
@@ -27,7 +26,7 @@ class InnovusDRC():
         else:
             ret = ret + " -type " + self.params['type']
 
-        tcl = open(tcl_path + "/" + tcl_file + ".tcl", 'w', encoding='utf-8')
+        tcl = open(os.path.join(tcl_path, tcl_file + ".tcl"), 'w', encoding='utf-8')
         tcl.writelines(ret)
         tcl.close()
 
