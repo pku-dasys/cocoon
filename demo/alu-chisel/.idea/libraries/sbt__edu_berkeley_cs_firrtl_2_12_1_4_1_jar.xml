@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="sbt: edu.berkeley.cs:firrtl_2.12:1.4.1:jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../.cache/coursier/v1/https/repo1.maven.org/maven2/edu/berkeley/cs/firrtl_2.12/1.4.1/firrtl_2.12-1.4.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../.cache/coursier/v1/https/repo1.maven.org/maven2/edu/berkeley/cs/firrtl_2.12/1.4.1/firrtl_2.12-1.4.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../.cache/coursier/v1/https/repo1.maven.org/maven2/edu/berkeley/cs/firrtl_2.12/1.4.1/firrtl_2.12-1.4.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

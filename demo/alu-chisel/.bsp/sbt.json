@@ -1,0 +1,1 @@
+{"name":"sbt","version":"1.5.2","bspVersion":"2.0.0-M5","languages":["scala"],"argv":["/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.312.b07-1.el7_9.x86_64/jre/bin/java","-Xms100m","-Xmx100m","-classpath","/home/wxm/.cache/sbt/boot/sbt-launch/1.5.5/sbt-launch-1.5.5.jar","xsbt.boot.Boot","-bsp","--sbt-launch-jar=/home/wxm/.cache/sbt/boot/sbt-launch/1.5.5/sbt-launch-1.5.5.jar"]}
