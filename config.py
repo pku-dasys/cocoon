@@ -42,6 +42,9 @@ class Config:
         design.clk_name = sec.get('clk_name')
         design.delay = sec.getint('delay')
 
+        if design.is_Chisel_design:
+            design.Chisel2RTL()
+
         return design
 
     def createFlow(self, sec_name):

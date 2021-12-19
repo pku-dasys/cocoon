@@ -1,4 +1,7 @@
 import time
+import os
+import subprocess
+
 
 class Design(object):
     def __init__(self):
@@ -14,3 +17,15 @@ class Design(object):
 
         self.clk_name = "clk"
         self.delay = 100
+
+    def Chisel2RTL(self):
+        """
+        Compile Chisel design to single verilog file
+        """
+        print("========== Compiling Chisel to Verilog... ==========")
+        chisel_dir = self.Chisel_input
+        cmd = f'sbt "runMain {self.top_name}"'
+        subprocess.run(cmd, cwd=chisel_dir, shell=True)
+    
+        self.rtl_input = os.path.join(self.Chisel_input, 'generated', '%s.v'%self.top_name)
+

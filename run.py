@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     if (len(sys.argv) != 2):
         print("ERROR: Invalid command line arguments")
-        print("Usage: python flow.py /path/to/your/config")
+        print("Usage: python run.py /path/to/your/config")
         exit(1)
     
     util.printWelcome()
