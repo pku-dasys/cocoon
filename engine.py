@@ -33,9 +33,18 @@ def run(design, flow):
         if x[0] == "GenusSynth":
             script_path = "../scripts/"
             tmp_op_syn = syn.GenusSynth(design)
-            tmp_op_syn.config(design, design_name + "_" + x[1])
+            tmp_op_syn.config(design_name + "_" + x[1])
             make_file.write("all:\n")
             make_file.write("\tgenus -legacy_ui -batch -files " + script_path + design_name + "_" + x[1] + ".tcl\n")
+        
+        if x[0] == "yosys":
+            script_path = "../scripts/"
+            tmp_op_syn = syn.YosysSynth(design)
+            tmp_op_syn.config(design_name + "_" + x[1], flow)
+            make_file.write("all:\n")
+            yosys_path = os.path.join(flow.yosys_bin_path, "yosys")
+            save_log = f" | tee -a {os.path.join(rpt_path, 'yosys.log')}\n"
+            make_file.write(f"\t{yosys_path} " + script_path + design_name + "_" + x[1] + ".ys" + save_log)
 
         if x[0] == "InnovusFloorplan":
             tmp_op_fp = fp.InnovusFloorplan(design)
@@ -80,7 +89,8 @@ def run(design, flow):
         make_file.write("\tinnovus -batch -files " + script_path + "flow.tcl")
     elif flow.flow['placement'] == "dreamplace":
         make_file.write("\tinnovus -batch -files " + script_path + "%s_to_floorplan.tcl\n" % design_name)
-        make_file.write("\tpython %s %s\n" % (flow.dreamplace_bin_path, script_path + "%s_to_place.json" % design_name))
+        save_log = f" | tee -a {os.path.join(rpt_path, 'dreamplace.log')}\n"
+        make_file.write("\tpython %s %s" % (flow.dreamplace_bin_path, script_path + "%s_to_place.json" % design_name) + save_log)
         make_file.write("\tinnovus -batch -files " + script_path + "%s_to_route.tcl\n" % design_name)
 
     make_file.close()

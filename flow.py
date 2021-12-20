@@ -19,6 +19,8 @@ class MyFlow(object):
         
         if self.flow['synth'] == 'genus':
             op_synth = "GenusSynth"
+        elif self.flow['synth'] == 'yosys':
+            op_synth = "yosys"
         self.ops.append((op_synth, "to_synth"))
 
         op_floorplan = "InnovusFloorplan"
@@ -34,8 +36,8 @@ class MyFlow(object):
             self.ops.append((op_place, "to_place"))
             self.params_place["def_out"] = False
 
-            op_cts = "InnovusCTS"
-            self.ops.append((op_cts, "to_cts"))
+            # op_cts = "InnovusCTS"
+            # self.ops.append((op_cts, "to_cts"))
 
             op_route = "InnovusRoute"
             self.ops.append((op_route, "to_route"))

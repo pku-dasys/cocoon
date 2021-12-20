@@ -2,7 +2,7 @@ import os
 import util
 
 
-class GenusSynth():
+class GenusSynth:
     def __init__(self, design, critical_path=None):
         self.params = dict()
         self.params["effort"] = "medium"
@@ -69,11 +69,11 @@ class GenusSynth():
 
         return cmd
 
-    def config(self, design, tcl_file):
-        rtl_file = design.rtl_input
-        lib_file = design.liberty_input
+    def config(self, tcl_name):
+        rtl_file = self.design.rtl_input
+        lib_file = self.design.liberty_input
         tcl_path = util.getScriptPath(self.design)
-        tcl = open(os.path.join(tcl_path, tcl_file + ".tcl"), 'w', encoding='utf-8')
+        tcl = open(os.path.join(tcl_path, tcl_name + ".tcl"), 'w', encoding='utf-8')
 
         tcl.write('set DESIGN %s\n'%(self.design.top_name))
         tcl.write('set clkpin %s\n'%(self.design.clk_name))
@@ -110,3 +110,50 @@ class GenusSynth():
         tcl.write('write_sdc >  %s\n'%(self.getObjSDC()))
 
         tcl.close()
+
+
+class YosysSynth:
+
+    def __init__(self, design):
+        self.design = design
+    
+    def getObjHDL(self):
+        obj_path = util.getObjPath(self.design)
+        obj_hdl = os.path.join(obj_path, self.design.top_name + ".vh")
+        return obj_hdl
+
+    def getObjSDC(self):
+        obj_path = util.getObjPath(self.design)
+        obj_sdc = os.path.join(obj_path, self.design.top_name + ".sdc")
+        return obj_sdc
+
+    def writeSDC(self):
+        sdc = open(self.getObjSDC(), 'w', encoding='utf-8')
+        sdc.write("set sdc_version 2.0\n")
+        sdc.write(f"current_design {self.design.top_name}\n")
+        sdc.write(f'create_clock -name "{self.design.clk_name}" -period {0.001 * self.design.delay} ' + '-waveform {0.0 0.05}\n')
+        sdc.close()
+
+    def config(self, tcl_name, flow):
+        rtl_file = self.design.rtl_input
+        lib_file = self.design.liberty_input
+        tcl_path = util.getScriptPath(self.design)
+        tcl = open(os.path.join(tcl_path, tcl_name + ".ys"), 'w', encoding='utf-8')
+
+        tcl.write("# Synthesis script for yosys created by qflow\n")
+        tcl.write(f"read_liberty -lib -ignore_miss_dir -setattr blackbox {lib_file}\n")
+        tcl.write(f"read_verilog {rtl_file}\n\n")
+        tcl.write("# High-level synthesis\n")
+        tcl.write(f"synth -top {self.design.top_name}\n")
+        tcl.write(f"dfflibmap -liberty {lib_file}\nopt\n\n")
+
+        abc_path = os.path.join(flow.yosys_bin_path, "yosys-abc")
+        tcl.write(f"abc -exe {abc_path} -liberty {lib_file} " + "-script +strash;scorr;ifraig;retime,{D};strash;dch,-f;map,-M,1,{D}\n")
+        tcl.write("flatten\nsetundef -zero\nclean -purge\niopadmap -outpad BUFX2 A:Y -bits\n")
+        tcl.write("opt\nclean\nrename -enumerate\n")
+        tcl.write(f"write_verilog {self.getObjHDL()}\n")
+        tcl.write("stat\n")
+
+        tcl.close()
+
+        self.writeSDC()

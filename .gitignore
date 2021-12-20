@@ -3,4 +3,5 @@
 __pycache__/
 results/
 demo/alu-chisel/generated/
+gurobi.log
 
