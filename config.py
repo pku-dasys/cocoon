@@ -1,5 +1,4 @@
 import configparser
-from re import DEBUG, MULTILINE
 from flow import MyFlow
 from designcfg import Design
 
