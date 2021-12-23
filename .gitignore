@@ -3,5 +3,6 @@
 __pycache__/
 results/
 demo/alu-chisel/generated/
+demo/alu-chisel/target/
 gurobi.log
 
