@@ -102,21 +102,22 @@ def run(design, flow):
     proc_make.wait()   # Wait until the process finishes
     assert proc_make.poll() == 0, "The flow failed and the process finished abnormally"
     print("The basic flow has finished successfully!")
-    print(f"Design is saved to {run_path}{design.top_name}")
+    print(f"Design is saved to {run_path}{design.top_name}\n\n")
 
     # Iterative Feedback Tuning
     if flow.n_iter_IFT > 0:
         for i in range(flow.n_iter_IFT):
-            print("Start of the IFT iteration %d" % (i+1))
+            print("========== Start of the IFT iteration %d ==========\n" % (i+1))
 
             rpt_path = tmp_op_syn.getRptTiming()
             critical_path = util.parseTimingRpt(rpt_path)
             tmp_op_syn = syn.GenusSynth(design, critical_path)
-            tmp_op_syn.config(design, design_name + "_" + "to_synth")
+            tmp_op_syn.config(design_name + "_" + "to_synth")
 
             proc_make = subprocess.Popen('make', cwd=run_path)  # Start a child process
             proc_make.wait()   # Wait until the process finishes
             assert proc_make.poll() == 0, "The flow failed and the process finished abnormally"
+            print(f"========== Finish IFT round [{i+1}] ==========\n\n")
 
     return 0
 
