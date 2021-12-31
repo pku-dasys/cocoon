@@ -12,6 +12,7 @@ class MyFlow(object):
         self.params_route = {"def_in" : False, "def_out" : True, "detailed_place" : False}
         self.params_drc = []
         self.n_iter_IFT = 0
+        self.verbose = True
         self.dreamplace_bin_path = " "
         self.yosys_bin_path = " "
 

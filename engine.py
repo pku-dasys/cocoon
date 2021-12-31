@@ -34,8 +34,9 @@ def run(design, flow):
             script_path = "../scripts/"
             tmp_op_syn = syn.GenusSynth(design)
             tmp_op_syn.config(design_name + "_" + x[1])
+            output = "\n" if flow.verbose else f" > {os.path.join(rpt_path, 'GenusSynth.log')}\n"
             make_file.write("all:\n")
-            make_file.write("\tgenus -legacy_ui -batch -files " + script_path + design_name + "_" + x[1] + ".tcl\n")
+            make_file.write("\tgenus -legacy_ui -batch -files " + script_path + design_name + "_" + x[1] + ".tcl" + output)
         
         if x[0] == "yosys":
             script_path = "../scripts/"
@@ -43,7 +44,7 @@ def run(design, flow):
             tmp_op_syn.config(design_name + "_" + x[1], flow)
             make_file.write("all:\n")
             yosys_path = os.path.join(flow.yosys_bin_path, "yosys")
-            save_log = f" | tee -a {os.path.join(rpt_path, 'yosys.log')}\n"
+            save_log = f" | tee -a {os.path.join(rpt_path, 'yosys.log')}\n" if flow.verbose else f" > {os.path.join(rpt_path, 'YosysSynth.log')}\n"
             make_file.write(f"\t{yosys_path} " + script_path + design_name + "_" + x[1] + ".ys" + save_log)
 
         if x[0] == "InnovusFloorplan":
@@ -86,12 +87,17 @@ def run(design, flow):
             overall_tcl.write('source %s%s_to_drc.tcl\n'%(tcl_path, design_name))
     
     if flow.flow['placement'] == "innovus":
-        make_file.write("\tinnovus -batch -files " + script_path + "flow.tcl")
+        output = "\n" if flow.verbose else f" > {os.path.join(rpt_path, 'innovus.log')}\n"
+        make_file.write("\tinnovus -batch -files " + script_path + "flow.tcl" + output)
     elif flow.flow['placement'] == "dreamplace":
-        make_file.write("\tinnovus -batch -files " + script_path + "%s_to_floorplan.tcl\n" % design_name)
-        save_log = f" | tee -a {os.path.join(rpt_path, 'dreamplace.log')}\n"
+        output = "\n" if flow.verbose else f" > {os.path.join(rpt_path, 'innovus_fp.log')}\n"
+        make_file.write("\tinnovus -batch -files " + script_path + ("%s_to_floorplan.tcl" % design_name) + output)
+
+        save_log = f" | tee -a {os.path.join(rpt_path, 'dreamplace.log')}\n" if flow.verbose else f" > {os.path.join(rpt_path, 'dreamplace.log')}\n"
         make_file.write("\tpython %s %s" % (flow.dreamplace_bin_path, script_path + "%s_to_place.json" % design_name) + save_log)
-        make_file.write("\tinnovus -batch -files " + script_path + "%s_to_route.tcl\n" % design_name)
+
+        output = "\n" if flow.verbose else f" > {os.path.join(rpt_path, 'innovus_route.log')}\n"
+        make_file.write("\tinnovus -batch -files " + script_path + ("%s_to_route.tcl" % design_name) + output)
 
     make_file.close()
     overall_tcl.close()

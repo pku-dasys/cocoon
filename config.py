@@ -56,6 +56,10 @@ class Config:
         assert sec.get('n_iter_IFT'), "Argument n_iter_IFT is required!\n"
         flow.n_iter_IFT = sec.getint('n_iter_IFT')
 
+        assert not ((flow.flow['synth'] == 'yosys') and (flow.n_iter_IFT > 0)), "IFT cannot work with Yosys, try GenusSynth instead.\n"
+
+        flow.verbose = sec.getboolean('verbose')
+
         if sec.get('dreamplace_bin_path'):
             flow.dreamplace_bin_path = sec.get('dreamplace_bin_path')
         if sec.get('yosys_bin_path'):
