@@ -21,7 +21,7 @@ class Config:
     def parse(self):
         flows = []
         for flow_name in self.multi_flows:
-            flows.append((self.createDesign(flow_name), self.createFlow(flow_name)))
+            flows.append((self.createDesign(flow_name), self.createFlow(flow_name), flow_name))
         return flows
 
     def createDesign(self, sec_name):
@@ -42,7 +42,8 @@ class Config:
         design.delay = sec.getint('delay')
 
         if design.is_Chisel_design:
-            design.Chisel2RTL()
+            verbose = sec.getboolean('verbose')
+            design.Chisel2RTL(verbose)
 
         return design
 

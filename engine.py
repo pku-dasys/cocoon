@@ -11,7 +11,9 @@ import ops.cds.drc as drc
 import time
 
 
-def run(design, flow):
+def run(design, flow, flow_name):
+    begin_t = time.time()
+
     design_name = design.top_name
     run_path = util.getRunPath(design)
     # print(run_path)
@@ -106,7 +108,7 @@ def run(design, flow):
     print("Current working directory: %s" % run_path)
     proc_make = subprocess.Popen('make', cwd=run_path)  # Start a child process
     proc_make.wait()   # Wait until the process finishes
-    assert proc_make.poll() == 0, "The flow failed and the process finished abnormally"
+    assert proc_make.poll() == 0, "The flow [%s] failed and the process finished abnormally" % flow_name
     print("The basic flow has finished successfully!")
     print(f"Design is saved to {run_path}{design.top_name}\n\n")
 
@@ -125,5 +127,6 @@ def run(design, flow):
             assert proc_make.poll() == 0, "The flow failed and the process finished abnormally"
             print(f"========== Finish IFT round [{i+1}] ==========\n\n")
 
-    return 0
+    end_t = time.time()
+    print("*************** Flow [{}] finishes in {:.1f} seconds ***************\n\n".format(flow_name, end_t - begin_t))
 

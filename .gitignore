@@ -4,5 +4,9 @@ __pycache__/
 results/
 demo/alu-chisel/generated/
 demo/alu-chisel/target/
+demo/alu-chisel/project/target/streams/
 gurobi.log
+*.ini
+!config.sample.ini
+
 

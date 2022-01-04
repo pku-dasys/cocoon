@@ -18,13 +18,14 @@ class Design(object):
         self.clk_name = "clk"
         self.delay = 100
 
-    def Chisel2RTL(self):
+    def Chisel2RTL(self, verbose):
         """
         Compile Chisel design to single verilog file
         """
         print("========== Compiling Chisel to Verilog... ==========")
         chisel_dir = self.Chisel_input
-        cmd = f'sbt "runMain {self.top_name}"'
+        output = "" if verbose else f" > {os.path.join(self.result_dir, self.top_name, self.lib_name, 'reports/', 'sbt.log')}"
+        cmd = f'sbt "runMain {self.top_name}"' + output
         subprocess.run(cmd, cwd=chisel_dir, shell=True)
     
         self.rtl_input = os.path.join(self.Chisel_input, 'generated', '%s.v'%self.top_name)
