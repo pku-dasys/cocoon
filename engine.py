@@ -63,6 +63,7 @@ def run(design, flow, flow_name):
 
         if x[0] == "InnovusPlace":
             tmp_op_pdn = place.InnovusPlace(design)
+            tmp_op_pdn.params['cadence_version'] = flow.cadence_version
             tmp_op_pdn.config(design, design_name + "_" + x[1])
             overall_tcl.write('source %s%s_to_place.tcl\n'%(tcl_path, design_name))
         

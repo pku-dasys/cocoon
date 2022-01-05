@@ -65,6 +65,8 @@ class Config:
             flow.dreamplace_bin_path = sec.get('dreamplace_bin_path')
         if sec.get('yosys_bin_path'):
             flow.yosys_bin_path = sec.get('yosys_bin_path')
+        if sec.get('cadence_version'):
+            flow.cadence_version = sec.get('cadence_version')
 
         flow.config()
         return flow

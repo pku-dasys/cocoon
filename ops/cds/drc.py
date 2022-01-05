@@ -18,7 +18,7 @@ class InnovusDRC():
     def config(self, design, tcl_file):
         tcl_path = util.getScriptPath(self.design)
         ret = 'check_design'
-        if self.params['out_file'] is not 'default':
+        if self.params['out_file'] != 'default':
             ret = ret + " -out_file " + self.params['out_file']
 
         if self.params['no_check']:

@@ -13,6 +13,7 @@ class MyFlow(object):
         self.params_drc = []
         self.n_iter_IFT = 0
         self.verbose = True
+        self.cadence_version = '19'
         self.dreamplace_bin_path = " "
         self.yosys_bin_path = " "
 

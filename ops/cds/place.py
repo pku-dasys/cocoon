@@ -11,6 +11,7 @@ class InnovusPlace(object):
         self.params['concurrent_macros'] = False
         self.params['incremental'] = False
         self.params['noPrePlaceOpt'] = False
+        self.params['cadence_version'] = '19'
         
     def setParams(self, param):
         if self.params.get(param) == None:
@@ -21,6 +22,13 @@ class InnovusPlace(object):
     def config(self, design, tcl_file):
         tcl_path = util.getScriptPath(self.design)
         ret = 'place_design'
+        if self.params['cadence_version'] == '19':
+            ret = 'place_design'
+        elif self.params['cadence_version'] == '15':
+            ret = 'placeDesign'
+        else:
+            Exception("Invalid Cadence version!\n")
+            
         for i in self.params:
             if self.params[i] == True:
                 ret = ret + " -" + i
