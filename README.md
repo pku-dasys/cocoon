@@ -47,7 +47,7 @@ verbose = True
 You can then run your design flow by executing:
 ```bash
 cd cocoon/
-python run.py /Path/to/your_config.ini
+python run.py /Path/to/your/config.ini
 ```
 ## Ongoing work
  - Integrate more EDA tools
