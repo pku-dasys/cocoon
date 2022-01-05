@@ -17,19 +17,19 @@ def run(design, flow, flow_name):
     design_name = design.top_name
     run_path = util.getRunPath(design)
     # print(run_path)
-    os.system("mkdir -p %s && rm -r %s*" % (run_path, run_path))
+    os.system("mkdir -p %s && rm -rf %s*" % (run_path, run_path))
     make_file = open(os.path.join(run_path, "Makefile"), "w")
     
     tcl_path = util.getScriptPath(design)
-    os.system("mkdir -p %s && rm -r %s*" % (tcl_path, tcl_path))
+    os.system("mkdir -p %s && rm -rf %s*" % (tcl_path, tcl_path))
     overall_tcl = open(os.path.join(tcl_path, "flow.tcl"), 'w', encoding='utf-8')
 
     obj_path = util.getObjPath(design)
-    os.system("mkdir -p %s && rm -r %s*" % (obj_path, obj_path))
+    os.system("mkdir -p %s && rm -rf %s*" % (obj_path, obj_path))
     os.system(f"cp {design.rtl_input} {obj_path}")
 
     rpt_path = util.getRptPath(design)
-    os.system("mkdir -p %s && rm -r %s*" % (rpt_path, rpt_path))
+    os.system("mkdir -p %s && rm -rf %s*" % (rpt_path, rpt_path))
 
     for x in flow.ops:
         if x[0] == "GenusSynth":
@@ -80,6 +80,7 @@ def run(design, flow, flow_name):
             tmp_op_route = route.InnovusRoute(design)
             for key, val in flow.params_route.items():
                 tmp_op_route.setParams(key, val)
+            tmp_op_route.paramsExtern['cadence_version'] = flow.cadence_version
             tmp_op_route.config(design, design_name + "_" + x[1])
                
             overall_tcl.write('source %s%s_to_route.tcl\n'%(tcl_path, design_name))

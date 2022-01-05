@@ -12,6 +12,7 @@ class InnovusRoute():
         self.paramsExtern['def_in'] = False
         self.paramsExtern['def_out'] = True
         self.paramsExtern['detailed_place'] = False
+        self.paramsExtern['cadence_version'] = '19'
 
         self.params['highFrequency'] = False
         self.params['viaPillarOpt'] = False
@@ -87,7 +88,12 @@ class InnovusRoute():
             tcl.write("defIn %s\n" % self.getDreamplaceDef())
 
         if self.paramsExtern['detailed_place']:
-            tcl.write("place_design\n")
+            if self.paramsExtern['cadence_version'] == '19':
+                tcl.write("place_design\n")
+            elif self.paramsExtern['cadence_version'] == '15':
+                tcl.write("placeDesign\n")
+            else:
+                Exception("Invalid Cadence version\n")
         
         # Routing
         tcl.write(ret + "\n")
