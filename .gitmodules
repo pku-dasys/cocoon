@@ -1,0 +1,6 @@
+[submodule "thirdparty/DREAMPlace"]
+	path = thirdparty/DREAMPlace
+	url = https://github.com/limbo018/DREAMPlace
+[submodule "thirdparty/yosys"]
+	path = thirdparty/yosys
+	url = https://github.com/YosysHQ/yosys
