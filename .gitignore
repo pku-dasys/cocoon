@@ -8,5 +8,8 @@ demo/alu-chisel/project/target/streams/
 gurobi.log
 *.ini
 !config.sample.ini
+!config.sample1.ini
+!config.sample2.ini
+!config.sample3.ini
 
 
