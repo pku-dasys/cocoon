@@ -1,6 +1,7 @@
 import configparser
 from flow import MyFlow
 from designcfg import Design
+import os
 
 
 class Config:
@@ -17,6 +18,7 @@ class Config:
             print("Error: Fail to read config file %s" % config_file)
         # List of different sections (flows) of the .ini file
         self.multi_flows = self.config.sections()
+        self.cocoon_home = os.getcwd()
     
     def parse(self):
         flows = []
@@ -61,12 +63,11 @@ class Config:
 
         flow.verbose = sec.getboolean('verbose')
 
-        if sec.get('dreamplace_bin_path'):
-            flow.dreamplace_bin_path = sec.get('dreamplace_bin_path')
-        if sec.get('yosys_bin_path'):
-            flow.yosys_bin_path = sec.get('yosys_bin_path')
         if sec.get('cadence_version'):
             flow.cadence_version = sec.get('cadence_version')
+
+        flow.yosys_bin_path = os.path.join(self.cocoon_home, 'thirdparty/yosys/build/')
+        flow.dreamplace_bin_path = os.path.join(self.cocoon_home, 'thirdparty/DREAMPlace/install/dreamplace/Placer.py')
 
         flow.config()
         return flow

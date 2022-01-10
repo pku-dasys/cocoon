@@ -21,7 +21,6 @@ if __name__ == "__main__":
     flows = config.parse()
     procs = []
 
-    # Under construction (Multi-task)
     for flow in flows:
         procs.append(Process(target=engine.run, args=(flow[0], flow[1], flow[2],)))
     

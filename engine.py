@@ -127,8 +127,8 @@ def run(design, flow, flow_name):
             proc_make = subprocess.Popen('make', cwd=run_path)  # Start a child process
             proc_make.wait()   # Wait until the process finishes
             assert proc_make.poll() == 0, "The flow failed and the process finished abnormally"
-            print(f"========== Finish IFT round [{i+1}] ==========\n\n")
+            print(f"========== Finish IFT round [{i+1}] ==========\n")
 
     end_t = time.time()
-    print("*************** Flow [{}] finishes in {:.1f} seconds ***************\n\n".format(flow_name, end_t - begin_t))
+    print("*************** Flow [{}] finishes in {:.1f} seconds ***************\n".format(flow_name, end_t - begin_t))
 
