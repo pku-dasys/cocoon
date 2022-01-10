@@ -13,38 +13,92 @@ Cocoon is an open-source infrastructure for integrated EDA with interoperability
  - Innovus
  - [DREAMPlace](https://github.com/limbo018/DREAMPlace) (optional)
  - JDK 8+ and sbt (optional)
- 
+
+## Setup
+- Clone this repo:
+  ```shell
+  git clone https://github.com/pku-dasys/cocoon.git
+  ```
+- If you are going to use DREAMPlace and yosys in your flow, pull git submodules in the root directory. Then solve their own dependencies.
+  ```shell
+  git submodule init
+  git submodule update
+  ```
+  Or alternatively, pull all the submodules when cloning the repo.
+  ```shell
+  git clone --recursive https://github.com/pku-dasys/cocoon.git
+  ```
+- Build DREAMPlace (optional):
+  ```shell
+  cd ./thirdparty/DREAMPlace/
+  mkdir build 
+  cd build/ 
+  cmake .. -DCMAKE_INSTALL_PREFIX=../install
+  make 
+  make install
+  ```
+- Build yosys (optional):
+  ```shell
+  cd ./thirdparty/yosys/
+  mkdir build
+  cd build/
+  make -f ../Makefile
+  ```
+
 ## Basic Usage
 Once you have installed the previous required dependencies, you can run Cocoon from the command line using your customized configuration file in INI format. 
 
-A demo configuration `demo/config.sample.ini` is provided, where your can find detailed description of user-defined options from the comments. Here's an example of a single flow:
+Three demo configurations `demo/config.sample1.ini`, `demo/config.sample2.ini`, `demo/config.sample3.ini` are provided, where your can find detailed description of user-defined options from the comments. Here's an example of 2 parallel flows.
 ```ini
-[flow_No.1]
+[gcd]
 # Design settings
-design_name = your_design_topmodule_name
-is_Chisel_design = True
-rtl_input = /Path/to/verilog/file
-Chisel_input = /Path/to/Chisel/project/
-result_dir = /Path/to/result/dir/
+design_name = gcd
+is_Chisel_design = False
+rtl_input = ./gcd/gcd.v
+Chisel_input = 
+result_dir = ../results/
 clk_name = clk
 delay = 1000
 
 # Library settings
-lib_name = your_lib_name
-lef_input = /Path/to/library/foo.lef
-liberty_input = /Path/to/library/bar.lib
-
-# External toolkit settings
-cadence_version = 19
-dreamplace_bin_path = /Path/to/DREAMPlace/install/dreamplace/Placer.py
-yosys_bin_path = /Path/to/yosys/build/
+lib_name = gscl45nm
+lef_input = ./lib/gscl45nm.lef
+liberty_input = ./lib/gscl45nm.lib
 
 # Flow settings
 flow = {'synth':'yosys', 'placement':'dreamplace', 'routing':'innovus'}
 n_iter_IFT = 0
-verbose = True
+verbose = False
+cadence_version = 19
+
+
+[ALU(Chisel)]
+# Design settings
+design_name = AluTop
+is_Chisel_design = True
+rtl_input = 
+Chisel_input = ./alu-chisel/
+result_dir = ../results/
+clk_name = clk
+delay = 1000
+
+# Library settings
+lib_name = gscl45nm
+lef_input = ./lib/gscl45nm.lef
+liberty_input = ./lib/gscl45nm.lib
+
+# Flow settings
+flow = {'synth':'genus', 'placement':'innovus', 'routing':'innovus'}
+n_iter_IFT = 0
+verbose = False
+cadence_version = 19
 ```
-You can then run your design flow by executing:
+You can directly run with the sample configurations with the demo designs, gcd (Verilog) and ALU (Chisel), together with the open-source FreePDK45nm library we provide in `./demo/`. For example:
+```bash
+cd cocoon/
+python run.py ./demo/config.sample1.ini
+```
+With correctly customized configuration, you can run your own flow by executing:
 ```bash
 cd cocoon/
 python run.py /Path/to/your/config.ini
